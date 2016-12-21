@@ -1,5 +1,6 @@
 package com.esure.esureapi.core.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
@@ -10,21 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.esure.esureapi.core.model.PolicyData;
+import com.esure.esureapi.core.model.RiskAddress;
 import com.esure.esureapi.core.model.Vehicle;
 import com.esure.esureapi.core.repository.PolicyDataRepository;
 import com.esure.esureapi.core.service.exception.UnexpectedNumberOfResultsException;
 import com.esure.esureapi.core.util.ParameterCheck;
 
 @Service
-public class PolicyServiceImpl implements PolicyService {
+public class PolicyDataServiceImpl implements PolicyDataService {
 
-	Logger logger = LoggerFactory.getLogger(PolicyServiceImpl.class);
+	Logger logger = LoggerFactory.getLogger(PolicyDataServiceImpl.class);
 
 	@Autowired
 	private PolicyDataRepository policyDataRepository;
 
 	@Autowired
 	private VehicleService vehicleService;
+
+	@Autowired
+	private RiskAddressService riskAddressService;
 
 	@Override
 	@Transactional
@@ -44,7 +49,18 @@ public class PolicyServiceImpl implements PolicyService {
 				policyData.setVehicle(vehicleService.createVehicle(vehicle));
 			}
 			catch (Exception e) {
-				logger.error("Could not create vehicle filed for PolicyData with id: " + policyData.getId()
+				logger.error("Could not create vehicle field for PolicyData with id: " + policyData.getId()
+						+ ". Policy number: " + policyData.getPolicyNumber());
+			}
+		}
+
+		RiskAddress riskAddress = policyData.getRiskAddress();
+		if (!Objects.isNull(riskAddress)) {
+			try {
+				policyData.setRiskAddress(riskAddressService.createRiskAddress(riskAddress));
+			}
+			catch (Exception e) {
+				logger.error("Could not create riskAddress field for PolicyData with id: " + policyData.getId()
 						+ ". Policy number: " + policyData.getPolicyNumber());
 			}
 		}
@@ -89,7 +105,18 @@ public class PolicyServiceImpl implements PolicyService {
 		ParameterCheck.mandatory("policyNumber", policyNumber);
 		PolicyData policyData = policyDataRepository.findByPolicyNumber(policyNumber);
 
+		if (Objects.isNull(policyData)) {
+			throw new UnexpectedNumberOfResultsException("There is no policy with policy number: " + policyNumber);
+		}
+
 		return policyData;
+	}
+
+	@Override
+	@Transactional
+	public List<PolicyData> getPolicyDataByVehicleRegistration(String registration) {
+		ParameterCheck.mandatory("registration", registration);
+		return policyDataRepository.findByVehicleId_Registration(registration);
 	}
 
 	@Override

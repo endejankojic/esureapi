@@ -16,6 +16,9 @@ databaseChangeLog:
               - column:
                   name: registration
                   type: varchar(60)
+                  constraints:
+                    nullable: false
+                    unique: true
               - column:
                   name: make
                   type: varchar(60)
@@ -63,6 +66,9 @@ databaseChangeLog:
               - column:
                   name: policy_number
                   type: varchar(60)
+                  constraints:
+                    nullable: false
+                    unique: true
               - column:
                   name: policy_type
                   type: varchar(60)
