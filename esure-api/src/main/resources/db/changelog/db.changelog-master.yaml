@@ -1,0 +1,101 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: dejan.kojic
+      changes:
+        - createTable:
+            tableName: vehicle
+            columns:
+              - column:
+                  name: vehicle_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: registration
+                  type: varchar(60)
+              - column:
+                  name: make
+                  type: varchar(60)
+              - column:
+                  name: model
+                  type: varchar(60)
+        - createTable:
+            tableName: risk_address
+            columns:
+              - column:
+                  name: risk_address_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: house_name
+                  type: varchar(60)
+              - column:
+                  name: house_number
+                  type: varchar(60)
+              - column:
+                  name: street
+                  type: varchar(60)
+              - column:
+                  name: country
+                  type: varchar(60)
+              - column:
+                  name: postal_town
+                  type: varchar(60)
+              - column:
+                  name: post_code
+                  type: varchar(60)
+        - createTable:
+            tableName: policy_data
+            columns:
+              - column:
+                  name: policy_data_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: policy_number
+                  type: varchar(60)
+              - column:
+                  name: policy_type
+                  type: varchar(60)
+              - column:
+                  name: product
+                  type: varchar(60)
+              - column:
+                  name: brand_code
+                  type: varchar(60)
+              - column:
+                  name: brand_name
+                  type: varchar(60)
+              - column:
+                  name: cancellation_code
+                  type: integer
+              - column:
+                  name: renewal
+                  type: boolean
+              - column:
+                  name: start_date
+                  type: TIMESTAMP
+              - column:
+                  name: renewal_date
+                  type: TIMESTAMP
+              - column:
+                  name: vehicle_id
+                  type: bigint
+                  constraints:
+                      foreignKeyName: fk_policy_data_vehicle
+                      references: vehicle(vehicle_id)
+              - column:
+                  name: risk_address_id
+                  type: bigint
+                  constraints:
+                      foreignKeyName: fk_policy_data_risk_address
+                      references: risk_address(risk_address_id)

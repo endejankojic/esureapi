@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/esure
+    username: esure
+    password: esure
+    
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    generate-ddl: false
+    show-sql: false
+      
+logging:
+  level:
+    root: info
+    com.esure.esureapi: debug
+    
+dir.root: D:/repositories/git/java/esureapi/esure-api/src/test/resources

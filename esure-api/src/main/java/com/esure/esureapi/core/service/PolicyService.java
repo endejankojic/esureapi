@@ -1,15 +1,16 @@
 package com.esure.esureapi.core.service;
 
 import com.esure.esureapi.core.model.PolicyData;
+import com.esure.esureapi.core.service.exception.UnexpectedNumberOfResultsException;
 
 public interface PolicyService {
 
-	void savePolicy(PolicyData policy);
+	PolicyData createPolicyData(PolicyData policyData);
 
-	PolicyData findPolicy(String policyNumber);
+	PolicyData getPolicyData(Long policyDataId) throws UnexpectedNumberOfResultsException;
 
-	PolicyData getPolicyByPolicyType(String policyType);
+	PolicyData getPolicyDataByPolicyNumber(String policyNumber);
 
-	void saveAll(int number);
+	void deletePolicyData(Long policyId) throws UnexpectedNumberOfResultsException;
 
 }
